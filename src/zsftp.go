@@ -6,6 +6,7 @@ import (
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 	"os"
+	"path"
 )
 
 func removeAllFiles(ftp *sftp.Client, dir string) { //{{{
@@ -68,7 +69,9 @@ func upload(ftp *sftp.Client, file string) { //{{{
 	}
 	defer srcf.Close()
 
-	dstf, err := ftp.Create(file)
+	_, dfile := path.Split(file)
+
+	dstf, err := ftp.Create(dfile)
 	if err != nil {
 		fmt.Println(err)
 	}
